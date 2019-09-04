@@ -1,4 +1,4 @@
-package com.atguigu.gmall.usermanage.bean;
+package com.atguigu.gmall.bean;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
