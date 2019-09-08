@@ -12,5 +12,5 @@ public interface UserService {
     void updateUserByName(String name, UserInfo userInfo);
     void delUser(String id);
 
-    UserInfo getUserInfo(String id);
+    UserInfo getUserInfoById(String id);
 }

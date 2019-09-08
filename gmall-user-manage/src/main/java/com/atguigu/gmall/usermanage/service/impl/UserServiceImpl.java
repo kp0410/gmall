@@ -1,12 +1,13 @@
 package com.atguigu.gmall.usermanage.service.impl;
 
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.atguigu.gmall.bean.UserInfo;
 import com.atguigu.gmall.service.UserService;
 import com.atguigu.gmall.usermanage.mapper.UserInfoMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public UserInfo getUserInfo(String id){
+    public UserInfo getUserInfoById(String id){
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(id);
         return userInfo;
     }

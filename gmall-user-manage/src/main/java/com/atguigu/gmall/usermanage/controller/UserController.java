@@ -36,7 +36,7 @@ public class UserController {
 
     @GetMapping("userInfo")
     public UserInfo getUser(String id){
-        return  userService.getUserInfo(id);
+        return  userService.getUserInfoById(id);
     }
 
     @PostMapping("delUser")
