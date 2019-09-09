@@ -55,4 +55,12 @@ public class ManageController {
         List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
         return attrValueList;
     }
+
+
+    //查询基本销售属性表
+    @RequestMapping("baseSaleAttrList")
+    @ResponseBody
+    public List<BaseSaleAttr> getBaseSaleAttrList(){
+        return   manageService.getBaseSaleAttrList();
+    }
 }

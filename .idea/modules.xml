@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/fastdfs-client-java/fastdfs-client-java.iml" filepath="$PROJECT_DIR$/fastdfs-client-java/fastdfs-client-java.iml" />
       <module fileurl="file://$PROJECT_DIR$/gamll-util-service/gamll-util-service.iml" filepath="$PROJECT_DIR$/gamll-util-service/gamll-util-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall.iml" filepath="$PROJECT_DIR$/gmall.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall-bean/gmall-bean.iml" filepath="$PROJECT_DIR$/gmall-bean/gmall-bean.iml" />
@@ -13,6 +14,8 @@
       <module fileurl="file://$PROJECT_DIR$/gmall-user-manage/gmall-user-manage.iml" filepath="$PROJECT_DIR$/gmall-user-manage/gmall-user-manage.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall-util-common/gmall-util-common.iml" filepath="$PROJECT_DIR$/gmall-util-common/gmall-util-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/gmall-util-web/gmall-util-web.iml" filepath="$PROJECT_DIR$/gmall-util-web/gmall-util-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fastdfs-client-java/src/main/main.iml" filepath="$PROJECT_DIR$/fastdfs-client-java/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fastdfs-client-java/src/test/test.iml" filepath="$PROJECT_DIR$/fastdfs-client-java/src/test/test.iml" />
     </modules>
   </component>
 </project>

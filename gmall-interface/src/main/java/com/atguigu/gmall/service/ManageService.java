@@ -1,9 +1,6 @@
 package com.atguigu.gmall.service;
 
-import com.atguigu.gmall.bean.BaseAttrInfo;
-import com.atguigu.gmall.bean.BaseCatalog1;
-import com.atguigu.gmall.bean.BaseCatalog2;
-import com.atguigu.gmall.bean.BaseCatalog3;
+import com.atguigu.gmall.bean.*;
 
 import java.util.List;
 
@@ -34,6 +31,16 @@ public interface ManageService {
 //    void getAttrValueList(String attrId);
 
     //删除平台属性
+
+
+    //spu列表查询
+    List<SpuInfo> getSpuInfoList(SpuInfo spuInfo);
+
+    // 查询基本销售属性表
+    List<BaseSaleAttr> getBaseSaleAttrList();
+
+    //spu保存属性
+    public void saveSpuInfo(SpuInfo spuInfo);
 
 
 }
