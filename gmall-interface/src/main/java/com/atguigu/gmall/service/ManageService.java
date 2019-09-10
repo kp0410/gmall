@@ -43,4 +43,10 @@ public interface ManageService {
     public void saveSpuInfo(SpuInfo spuInfo);
 
 
+    // 根据spuId获取spuImage中的所有图片列表
+    List<SpuImage> getSpuImageList(String spuId);
+
+
+    //根据spuId获取spuSaleAttr中的所有列表
+    List<SpuSaleAttr> getSpuSaleAttrList(String spuId);
 }

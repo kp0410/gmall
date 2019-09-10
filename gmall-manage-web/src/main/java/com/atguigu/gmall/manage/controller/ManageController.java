@@ -37,11 +37,20 @@ public class ManageController {
     @GetMapping("attrInfoList")
     public List<BaseAttrInfo> getBaseAttrInfo(String catalog3Id){
         List<BaseAttrInfo> baseAttrInfoList = manageService.getAttrList(catalog3Id);
+
         return baseAttrInfoList;
     }
 
+//    @GetMapping("attrInfoList")
+//    public List<BaseAttrInfo> getBaseAttrInfoList(String catalog3Id){
+//        List<BaseAttrInfo> attrList = manageService.getAttrList(catalog3Id);
+//
+//        return attrList;
+//
+//    }
 
-    @RequestMapping("saveAttrInfo")
+
+    @PostMapping("saveAttrInfo")
     public void saveAttrInfo(@RequestBody BaseAttrInfo baseAttrInfo){
         manageService.saveAttrInfo(baseAttrInfo);
 
@@ -58,9 +67,11 @@ public class ManageController {
 
 
     //查询基本销售属性表
-    @RequestMapping("baseSaleAttrList")
+    @PostMapping("baseSaleAttrList")
     @ResponseBody
     public List<BaseSaleAttr> getBaseSaleAttrList(){
+
         return   manageService.getBaseSaleAttrList();
     }
+
 }

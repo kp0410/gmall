@@ -67,10 +67,21 @@ public class ManageServiceImpl implements ManageService{
 
     @Override
     public List<BaseAttrInfo> getAttrList(String catalog3Id) {
-        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
-        baseAttrInfo.setCatalog3Id(catalog3Id);
-        List<BaseAttrInfo> baseAttrInfoList = baseAttrInfoMapper.select(baseAttrInfo);
-        return baseAttrInfoList;
+//        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+//        baseAttrInfo.setCatalog3Id(catalog3Id);
+//        List<BaseAttrInfo> baseAttrInfoList = baseAttrInfoMapper.select(baseAttrInfo);
+//
+//        //查询平台属性值
+//        for (BaseAttrInfo baseAttrInfoValue : baseAttrInfoList) {
+//            BaseAttrValue baseAttrValue = new BaseAttrValue();
+//            baseAttrValue.setAttrId(baseAttrInfoValue.getId());
+//            List<BaseAttrValue> baseAttrValueList = baseAttrValueMapper.select(baseAttrValue);
+//            baseAttrInfo.setAttrValueList(baseAttrValueList);
+//        }
+
+        List<BaseAttrInfo> list = baseAttrInfoMapper.getBaseAttrInfoListByCatalog3Id(catalog3Id);
+
+        return list;
     }
 
 
@@ -130,12 +141,13 @@ public class ManageServiceImpl implements ManageService{
         return spuInfoMapper.select(spuInfo);
     }
 
+    //销售属性查询
     @Override
     public List<BaseSaleAttr> getBaseSaleAttrList() {
         return baseSaleAttrMapper.selectAll();
     }
 
-    //spu列表属性保存
+    //spu列表属性保存 （ 销售属性  图片列表  销售属性值 ）
     @Override
     public void saveSpuInfo(SpuInfo spuInfo) {
         // 什么情况下是保存，什么情况下是更新 spuInfo
@@ -197,6 +209,24 @@ public class ManageServiceImpl implements ManageService{
             }
         }
 
+    }
+
+    /**
+     *  根据spuId获取spuImage中的所有图片列表
+     * @param spuId
+     * @return
+     */
+    @Override
+    public List<SpuImage> getSpuImageList(String spuId) {
+        SpuImage spuImage = new SpuImage();
+        spuImage.setSpuId(spuId);
+        return spuImageMapper.select(spuImage);
+    }
+
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrList(String spuId) {
+
+        return spuSaleAttrMapper.selectSpuSaleAttrList(spuId);
     }
 
 
