@@ -250,6 +250,7 @@ public class ManageServiceImpl implements ManageService{
         SkuImage skuImage = new SkuImage();
         skuImage.setSkuId(skuInfo.getId());
         skuImageMapper.delete(skuImage);
+
         // insert
         List<SkuImage> skuImageList = skuInfo.getSkuImageList();
         if(skuImageList != null && skuImageList.size() > 0){
@@ -286,6 +287,7 @@ public class ManageServiceImpl implements ManageService{
         SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
         skuSaleAttrValue.setSkuId(skuInfo.getId());
         skuSaleAttrValueMapper.delete(skuSaleAttrValue);
+
         //插入数据
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
         if (skuSaleAttrValueList != null && skuSaleAttrValueList.size()>0) {
@@ -300,11 +302,36 @@ public class ManageServiceImpl implements ManageService{
         }
     }
 
+    @Override
+    public SkuInfo getSkuInfo(String skuId) {
+//        SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
+//
+//        SkuImage skuImage = new SkuImage();
+//        skuImage.setSkuId(skuId);
+//        List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
+//
+//        skuInfo.setSkuImageList(skuImageList);
 
+        SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
 
+        SkuImage skuImage = new SkuImage();
+        skuImage.setSkuId(skuId);
+        List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
+        skuInfo.setSkuImageList(skuImageList);
 
+        SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
+        skuSaleAttrValue.setSkuId(skuId);
+        List<SkuSaleAttrValue> skuSaleAttrValueList = skuSaleAttrValueMapper.select(skuSaleAttrValue);
+        skuInfo.setSkuSaleAttrValueList(skuSaleAttrValueList);
 
+        return skuInfo;
+    }
 
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(String skuId, String spuId) {
+        List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId, spuId);
+        return spuSaleAttrList;
+    }
 
 
 }

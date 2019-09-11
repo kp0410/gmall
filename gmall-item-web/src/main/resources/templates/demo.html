@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p th:text="${hello}" th:value="${hello}">打底值</p>
+
+<input  th:value="${skuInfo.skuName}">
+
+<p th:utext="${gname}">color</p>
+
+
+<table border="1">
+ <tr th:each="skuImage:${skuInfo.skuImageList}">
+     <td th:text="${skuImage.id}">
+     </td>
+     <td th:text="${skuImage.imgName}">
+     </td>
+     <td th:text="${skuImage.imgUrl}">
+     </td>
+     <td th:text="(${skuImage.id}=='250')?'是250':'不是250'">
+     </td>
+     <!--If 判断-->
+     <td th:if="${skuImage.id}=='243'" >123456</td>
+ </tr>
+</table>
+
+<!--&lt;!&ndash;测试循环&ndash;&gt;-->
+<!--<table>-->
+    <!--&lt;!&ndash; <c:foreach items="${arrayList}" var = "arry">&ndash;&gt;-->
+    <!--<tr th:each="arry,stat: ${arrayList}">-->
+        <!--<td th:text="${arry}"></td>-->
+        <!--<td th:text="${stat.index}"></td>-->
+    <!--</tr>-->
+<!--</table>-->
+
+</body>
+</html>
