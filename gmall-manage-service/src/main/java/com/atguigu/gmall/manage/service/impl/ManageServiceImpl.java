@@ -15,33 +15,34 @@ public class ManageServiceImpl implements ManageService{
 
     @Autowired
     BaseCatalog1Mapper baseCatalog1Mapper;
-
     @Autowired
     BaseCatalog2Mapper baseCatalog2Mapper;
-
     @Autowired
     BaseCatalog3Mapper baseCatalog3Mapper;
-
     @Autowired
     BaseAttrInfoMapper baseAttrInfoMapper;
-
     @Autowired
     BaseAttrValueMapper baseAttrValueMapper;
-
-    @Autowired
-    SpuInfoMapper spuInfoMapper;
-
     @Autowired
     BaseSaleAttrMapper baseSaleAttrMapper;
 
     @Autowired
+    SpuInfoMapper spuInfoMapper;
+    @Autowired
     SpuImageMapper spuImageMapper;
-
     @Autowired
     SpuSaleAttrMapper spuSaleAttrMapper;
-
     @Autowired
     SpuSaleAttrValueMapper spuSaleAttrValueMapper;
+
+    @Autowired
+    SkuInfoMapper skuInfoMapper;
+    @Autowired
+    SkuImageMapper skuImageMapper;
+    @Autowired
+    SkuAttrValueMapper skuAttrValueMapper;
+    @Autowired
+    SkuSaleAttrValueMapper skuSaleAttrValueMapper;
 
 
     @Override
@@ -149,6 +150,7 @@ public class ManageServiceImpl implements ManageService{
 
     //spu列表属性保存 （ 销售属性  图片列表  销售属性值 ）
     @Override
+//    @Transactional
     public void saveSpuInfo(SpuInfo spuInfo) {
         // 什么情况下是保存，什么情况下是更新 spuInfo
         if (spuInfo.getId()==null || spuInfo.getId().length() == 0){
@@ -228,6 +230,81 @@ public class ManageServiceImpl implements ManageService{
 
         return spuSaleAttrMapper.selectSpuSaleAttrList(spuId);
     }
+
+    /**
+     * 保存sku属性值
+     * @param skuInfo
+     */
+    @Override
+    @Transactional
+    public void saveSkuInfo(SkuInfo skuInfo) {
+        // sku_info
+        if(skuInfo.getId() == null ||skuInfo.getId().length() == 0){
+            // 设置id 为自增
+            skuInfo.setId(null);
+            skuInfoMapper.insertSelective(skuInfo);
+        } else {
+            skuInfoMapper.updateByPrimaryKeySelective(skuInfo);
+        }
+        // sku_img
+        SkuImage skuImage = new SkuImage();
+        skuImage.setSkuId(skuInfo.getId());
+        skuImageMapper.delete(skuImage);
+        // insert
+        List<SkuImage> skuImageList = skuInfo.getSkuImageList();
+        if(skuImageList != null && skuImageList.size() > 0){
+            for (SkuImage image : skuImageList) {
+                /* "" 区别 null*/
+                if (image.getId() != null && image.getId().length()==0) {
+                    image.setId(null);
+                }
+                // skuId 必须赋值
+                image.setSkuId(skuInfo.getId());
+                skuImageMapper.insertSelective(image);
+            }
+        }
+
+        // sku_attr_value
+        SkuAttrValue skuAttrValue = new SkuAttrValue();
+        skuAttrValue.setSkuId(skuInfo.getId());
+        skuAttrValueMapper.delete(skuAttrValue);
+
+        //插入数据
+        List<SkuAttrValue> skuAttrValueList = skuInfo.getSkuAttrValueList();
+        if (skuAttrValueList != null && skuAttrValueList.size()>0) {
+            for (SkuAttrValue attrValue : skuAttrValueList) {
+                if (attrValue.getId()!=null && attrValue.getId().length()==0){
+                    attrValue.setId(null);
+                }
+                // skuId
+                attrValue.setSkuId(skuInfo.getId());
+                skuAttrValueMapper.insertSelective(attrValue);
+            }
+        }
+
+        // sku_sale_attr_value,
+        SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
+        skuSaleAttrValue.setSkuId(skuInfo.getId());
+        skuSaleAttrValueMapper.delete(skuSaleAttrValue);
+        //插入数据
+        List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
+        if (skuSaleAttrValueList != null && skuSaleAttrValueList.size()>0) {
+            for (SkuSaleAttrValue  saleAttrValue : skuSaleAttrValueList) {
+                if (saleAttrValue.getId() != null && saleAttrValue.getId().length()==0) {
+                    saleAttrValue.setId(null);
+                }
+                // skuId
+                saleAttrValue.setSkuId(skuInfo.getId());
+                skuSaleAttrValueMapper.insertSelective(saleAttrValue);
+            }
+        }
+    }
+
+
+
+
+
+
 
 
 }

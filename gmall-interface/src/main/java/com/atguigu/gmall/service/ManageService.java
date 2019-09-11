@@ -49,4 +49,6 @@ public interface ManageService {
 
     //根据spuId获取spuSaleAttr中的所有列表
     List<SpuSaleAttr> getSpuSaleAttrList(String spuId);
+
+    public void saveSkuInfo(SkuInfo skuInfo);
 }
