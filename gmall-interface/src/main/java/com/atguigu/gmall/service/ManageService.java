@@ -3,6 +3,7 @@ package com.atguigu.gmall.service;
 import com.atguigu.gmall.bean.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ManageService {
     //查询一级分类
@@ -59,4 +60,5 @@ public interface ManageService {
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(String skuId,String spuId);
 
 
+    public Map getSkuValueIdsMap(String spuId);
 }

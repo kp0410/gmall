@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ManageServiceImpl implements ManageService{
@@ -331,6 +333,18 @@ public class ManageServiceImpl implements ManageService{
     public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(String skuId, String spuId) {
         List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId, spuId);
         return spuSaleAttrList;
+    }
+
+    @Override
+    public Map getSkuValueIdsMap(String spuId) {
+        List<Map> mapList = skuSaleAttrValueMapper.getSaleAttrValueBySpu(spuId);
+        Map skuValueIdsMap = new HashMap();
+        for (Map map: mapList) {
+          String skuId = map.get("sku_id")+"";
+          String valueIds = (String) map.get("value_ids");
+          skuValueIdsMap.put(valueIds,skuId);
+        }
+        return skuValueIdsMap;
     }
 
 

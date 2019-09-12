@@ -73,6 +73,7 @@ $(function(){
             var valuesSku = $("#valuesSku").attr("value");
             console.log("valuesSku:"+valuesSku);
             var valuesSkuJson=JSON.parse(valuesSku);
+            // console.log("valuesSkuJson:"+valuesSkuJson);
             var skuId= valuesSkuJson[valueIds];
 			console.log("skuId:"+skuId);
 			var skuIdSelf=$("#skuId").val();
