@@ -56,6 +56,8 @@ public interface ManageService {
     // 查询skuInfo
     public SkuInfo getSkuInfo(String skuId);
 
+//    SkuInfo getSkuInfo_redis(String skuId);
+
     //根据spuid查询销售属性,选中传入的sku涉及的销售属性
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(String skuId,String spuId);
 
