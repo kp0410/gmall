@@ -1,11 +1,15 @@
 package com.atguigu.gmall.manage.service.impl;
 
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.atguigu.gmall.bean.*;
 import com.atguigu.gmall.manage.mapper.*;
 import com.atguigu.gmall.service.ManageService;
+import com.atguigu.gmall.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.HashMap;
@@ -14,6 +18,8 @@ import java.util.Map;
 
 @Service
 public class ManageServiceImpl implements ManageService{
+    @Autowired
+    RedisUtil  redisUtil;
 
     @Autowired
     BaseCatalog1Mapper baseCatalog1Mapper;
@@ -313,6 +319,18 @@ public class ManageServiceImpl implements ManageService{
 //        List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
 //
 //        skuInfo.setSkuImageList(skuImageList);
+
+//        Jedis jedis = redisUtil.getJedis();
+//        jedis.set("kp","gezi");
+//        jedis.close();
+
+        try {
+            Jedis jedis = redisUtil.getJedis();
+            jedis.set("test","text_value" );
+        }catch (JedisConnectionException e){
+            e.printStackTrace();
+        }
+
 
         SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
 
