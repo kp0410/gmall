@@ -18,4 +18,12 @@
             <result property="attrId" column="id"></result>
         </collection>
     </resultMap>
+
+    <select id="selectAttrInfoListByIds" resultMap="baseAttrList">
+        SELECT
+        bi.id,attr_name,catalog3_id,bv.id attr_vaule_id, bv.value_name ,bv.attr_id
+        FROM `base_attr_info`  bi INNER JOIN `base_attr_value`  bv
+        ON bi.id=bv.attr_id
+        WHERE bv.id IN (${valueIds})
+    </select>
 </mapper>
