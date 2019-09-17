@@ -449,21 +449,32 @@ public class ManageServiceImpl implements ManageService{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        //单纯的信息
         SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
         if(skuInfo==null){
             return null;
         }
 
+        //查询图片
         SkuImage skuImage = new SkuImage();
         skuImage.setSkuId(skuId);
         List<SkuImage> skuImageList = skuImageMapper.select(skuImage);
+        //将查询出来所有图片赋予对象
         skuInfo.setSkuImageList(skuImageList);
 
+        //查询销售属性值
         SkuSaleAttrValue skuSaleAttrValue = new SkuSaleAttrValue();
         skuSaleAttrValue.setSkuId(skuId);
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuSaleAttrValueMapper.select(skuSaleAttrValue);
+        //将查询出来所有销售属性值赋给对象
         skuInfo.setSkuSaleAttrValueList(skuSaleAttrValueList);
+
+        //查询平台属性值
+        SkuAttrValue skuAttrValue = new SkuAttrValue();
+        skuAttrValue.setSkuId(skuId);
+        List<SkuAttrValue> skuAttrValueList = skuAttrValueMapper.select(skuAttrValue);
+        //将查询出来的所有平台属性值赋给对象
+        skuInfo.setSkuAttrValueList(skuAttrValueList);
 
         return skuInfo;
     }
