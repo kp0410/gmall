@@ -90,14 +90,14 @@
             </div>
             <div class="GM_nav_logo">
 
-                <div class="GM_pre"  >
+                <div class="GM_pre" th:each="attrInfo:${attrList}" >
                     <div class="sl_key">
-                        <span  >属性1111：</span>
+                        <span th:text="${attrInfo.attrName}" >属性1111：</span>
                     </div>
                     <div class="sl_value">
                         <ul>
-                            <li  ><a  href="#"  >属性值111</a></li>
-							<li  ><a  href="#"  >属性值222</a></li>
+                            <li th:each="attrValue:${attrInfo.attrValueList}" ><a th:href="'/list.html?'+${urlParam}+'&valueId+'+${attrValue.id}" th:text="${attrValue.valueName}" href="#"  >属性值111</a></li>
+							<!--<li  ><a  href="#"  >属性值222</a></li>-->
 						  </ul>
                     </div>
                 </div>

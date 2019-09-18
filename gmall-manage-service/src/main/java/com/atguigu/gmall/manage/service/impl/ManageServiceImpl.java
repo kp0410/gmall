@@ -503,7 +503,7 @@ public class ManageServiceImpl implements ManageService{
     public List<BaseAttrInfo> getAttrList(List<String> attrValueIdList) {
         String attrValueIds = StringUtils.join(attrValueIdList.toArray(), ",");
         List<BaseAttrInfo> baseAttrInfoList = baseAttrInfoMapper.selectAttrInfoListByIds(attrValueIds);
-        return null;
+        return baseAttrInfoList;
     }
 
 

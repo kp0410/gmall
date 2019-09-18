@@ -23,14 +23,16 @@ public class ListController {
     ManageService manageService;
 
     @GetMapping("list.html")
-    @ResponseBody
+//    @ResponseBody
     public String getList(SkuLsParams skuLsParams,Model model){
         //根据参数返回sku列表
         SkuLsResult skuLsResult  = listService.search(skuLsParams);
+        model.addAttribute("skuLsResult",skuLsResult);
 
         //从结果中取出平台属性列表
         List<String> attrValueIdList = skuLsResult.getAttrValueIdList();
         List<BaseAttrInfo> attrList = manageService.getAttrList(attrValueIdList);
+        model.addAttribute("attrList",attrList);
 
         // 已选的属性值列表\
         String urlParam = makeUrlParam(skuLsParams);
@@ -51,13 +53,12 @@ public class ListController {
         }
 
         model.addAttribute("urlParam",urlParam);
-        model.addAttribute("attrList",attrList);
 
         //获取sku属性值列表
         List<SkuLsInfo> skuLsInfoList = skuLsResult.getSkuLsInfoList();
         model.addAttribute("skuLsInfoList",skuLsInfoList);
-//        model.addAttribute("skuLsInfoList",skuLsResult.getSkuLsInfoList());
-
+        //model.addAttribute("skuLsInfoList",skuLsResult.getSkuLsInfoList());
+        //return JSON.toJSONString(search);
         return "list";
     }
 
