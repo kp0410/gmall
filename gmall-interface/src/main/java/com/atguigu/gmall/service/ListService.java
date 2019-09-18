@@ -9,4 +9,7 @@ public interface ListService {
     public void saveSkuInfo(SkuLsInfo skuLsInfo);
 
     public SkuLsResult search(SkuLsParams skuLsParams);
+
+    //评分计数  Redis
+    public void incrHotScore(String skuId);
 }

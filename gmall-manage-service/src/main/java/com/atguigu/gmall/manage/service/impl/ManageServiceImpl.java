@@ -388,7 +388,7 @@ public class ManageServiceImpl implements ManageService{
         SkuInfo skuInfoResult=null;
         //1  先查redis  没有再查数据库
         Jedis jedis = redisUtil.getJedis();
-        int SKU_EXPIRE_SEC=100;
+        int SKU_EXPIRE_SEC=1000;
         // redis结构 ： 1 type  string  2 key   sku:101:info  3 value  skuInfoJson
         String skuKey=SKUKEY_PREFIX+skuId+SKUKEY_INFO_SUFFIX;
         String skuInfoJson = jedis.get(skuKey);
@@ -446,7 +446,7 @@ public class ManageServiceImpl implements ManageService{
     private SkuInfo getSkuInfoDB(String skuId) {
         System.err.println(Thread.currentThread()+"读取数据库！！");
         try {
-            Thread.sleep(3000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

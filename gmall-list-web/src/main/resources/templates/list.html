@@ -70,11 +70,11 @@
             筛选条件	    
         </div>
 		<i><img src="/image/right-@1x.png" alt=""></i>
-        <span  >&quot;小米&quot;</span>
-		<a class="select-attr"     href="#"     > 2G<b> ✖ </b>
+        <span th:if="${keyword}!=null" th:text="'&quot'+${keyword}+'&quot;'" >&quot;小米&quot;</span>
+		<a class="select-attr" th:each="baseAttrValue:${baseAttrValuesList}" th:utext="${baseAttrValue.valueName}+'<b> ✖ </b>'" th:href="'/list.html?'+${baseAttrValue.urlParam}"  href="#"     > 2G<b> ✖ </b>
 		</a>
-		 <a class="select-attr"   href="#"      > 屏幕尺寸:5.1-5.5英寸<b> ✖ </b>
-		</a>
+		 <!--<a class="select-attr"   href="#"      > 屏幕尺寸:5.1-5.5英寸<b> ✖ </b>-->
+		<!--</a>-->
 
     </div>
 </div>
@@ -96,22 +96,22 @@
                     </div>
                     <div class="sl_value">
                         <ul>
-                            <li th:each="attrValue:${attrInfo.attrValueList}" ><a th:href="'/list.html?'+${urlParam}+'&valueId+'+${attrValue.id}" th:text="${attrValue.valueName}" href="#"  >属性值111</a></li>
+                            <li th:each="attrValue:${attrInfo.attrValueList}" ><a th:href="'/list.html?'+${urlParam}+'&valueId='+${attrValue.id}" th:text="${attrValue.valueName}" href="#"  >属性值111</a></li>
 							<!--<li  ><a  href="#"  >属性值222</a></li>-->
 						  </ul>
                     </div>
                 </div>
-				 <div class="GM_pre"  >
-                    <div class="sl_key">
-                        <span  >属性222：</span>
-                    </div>
-                    <div class="sl_value">
-                        <ul>
-                             <li  ><a href="#"   >属性值333</a></li>
-							<li  ><a href="#"  >属性值444</a></li>
-							</ul>
-                    </div>
-                </div>
+				 <!--<div class="GM_pre"  >-->
+                    <!--<div class="sl_key">-->
+                        <!--<span  >属性222：</span>-->
+                    <!--</div>-->
+                    <!--<div class="sl_value">-->
+                        <!--<ul>-->
+                             <!--<li  ><a href="#"   >属性值333</a></li>-->
+							<!--<li  ><a href="#"  >属性值444</a></li>-->
+							<!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
 
@@ -222,21 +222,21 @@
                                     Apple iPhone 7 Plus (A1661) 32G 黑色 移动联通电信4G手机
                                 </a>
                         </div>
-				    <div style="width:215px"   >
-                            <p class="da">
-                                <a href="#"  onclick="javascript:item('1')">
-                                    <img     src="img/57d0d400Nfd249af4.jpg" class="dim">
-                                </a>
-                            </p>
+				    <!--<div style="width:215px"   >-->
+                            <!--<p class="da">-->
+                                <!--<a href="#"  onclick="javascript:item('1')">-->
+                                    <!--<img     src="img/57d0d400Nfd249af4.jpg" class="dim">-->
+                                <!--</a>-->
+                            <!--</p>-->
 
-                            <p class="tab_R">
-                                <span >¥5199.00</span>
-                            </p>
+                            <!--<p class="tab_R">-->
+                                <!--<span >¥5199.00</span>-->
+                            <!--</p>-->
 
-                                <a href="#" title=""  onclick="javascript:item('1')"  class="tab_JE"  >
-                                    Apple iPhone 7 Plus (A1661) 32G 黑色 移动联通电信4G手机
-                                </a>
-                        </div>
+                                <!--<a href="#" title=""  onclick="javascript:item('1')"  class="tab_JE"  >-->
+                                    <!--Apple iPhone 7 Plus (A1661) 32G 黑色 移动联通电信4G手机-->
+                                <!--</a>-->
+                        <!--</div>-->
  
                     </div>
 
