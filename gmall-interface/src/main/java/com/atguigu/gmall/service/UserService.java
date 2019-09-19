@@ -13,4 +13,6 @@ public interface UserService {
     void delUser(String id);
 
     UserInfo getUserInfoById(String id);
+
+    Boolean login(UserInfo userInfo);
 }
