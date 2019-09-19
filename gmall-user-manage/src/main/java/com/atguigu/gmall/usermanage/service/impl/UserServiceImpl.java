@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public int userKey_timeOut=60*60*24;
 
     @Override
-    public Boolean  login(UserInfo userInfo) {
+    public UserInfo login(UserInfo userInfo) {
         // 1、比对数据库信息   用户名和密码
         String passwd = userInfo.getPasswd();
         String password = DigestUtils.md5DigestAsHex(passwd.getBytes());
@@ -75,9 +75,24 @@ public class UserServiceImpl implements UserService {
             Jedis jedis = redisUtil.getJedis();
             jedis.setex(userKey_prefix+info.getId()+userinfoKey_suffix,userKey_timeOut, JSON.toJSONString(info));
             jedis.close();
-            return true;
+            return info;
         }
 
-        return false;
+        return null;
+    }
+
+    @Override
+    public UserInfo verify(String userId) {
+        //去缓存中查询是否有redis
+        Jedis jedis = redisUtil.getJedis();
+        String key = userKey_prefix + userId + userinfoKey_suffix;
+        String userJson = jedis.get(key);
+        //延长时效
+        jedis.expire(key,userKey_timeOut);
+        if (userJson != null) {
+            UserInfo userInfo = JSON.parseObject(userJson, UserInfo.class);
+            return userInfo;
+        }
+        return null;
     }
 }

@@ -41,6 +41,7 @@
             <artifactId>batik-ext</artifactId>
         </dependency>
 
+
         <!-- 生成token -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

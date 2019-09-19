@@ -14,5 +14,7 @@ public interface UserService {
 
     UserInfo getUserInfoById(String id);
 
-    Boolean login(UserInfo userInfo);
+    UserInfo login(UserInfo userInfo);
+
+    UserInfo verify(String userId);
 }
