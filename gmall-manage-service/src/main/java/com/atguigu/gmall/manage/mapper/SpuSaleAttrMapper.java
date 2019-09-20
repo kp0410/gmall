@@ -10,5 +10,5 @@ public interface SpuSaleAttrMapper extends Mapper<SpuSaleAttr> {
 
     public List<SpuSaleAttr> selectSpuSaleAttrList(String spuId);
 
-    List<SpuSaleAttr> selectSpuSaleAttrListCheckBySku(@Param("skuId") String skuId,@Param("spuId") String spuId);
+    public List<SpuSaleAttr> selectSpuSaleAttrListCheckBySku(@Param("skuId") String skuId,@Param("spuId") String spuId);
 }

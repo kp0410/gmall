@@ -84,11 +84,12 @@ public class PassportController {
         String key = "atguigu";
         String ip="192.168.17.128";
         Map map = new HashMap();
-        map.put("userId","1001");
-        map.put("nickName","marry");
+        map.put("userId","1111");
+        map.put("nickName","kunpeng");
         String token = JwtUtil.encode(key, map, ip);
         System.out.println("token = "+token);
-        Map<String, Object> decode = JwtUtil.decode(token, key, "192.168.17.128");
+        Map<String, Object> decode = JwtUtil.decode(token, key, "192.168.17.232");
+        System.out.println("decode = "+decode);
     }
 
 

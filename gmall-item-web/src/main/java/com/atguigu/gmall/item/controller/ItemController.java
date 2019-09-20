@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall.bean.SkuInfo;
 import com.atguigu.gmall.bean.SpuSaleAttr;
+import com.atguigu.gmall.config.LoginRequire;
 import com.atguigu.gmall.service.ListService;
 import com.atguigu.gmall.service.ManageService;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ public class ItemController {
     ListService listService;
 
     @GetMapping("{skuId}.html")
+    @LoginRequire
     public String skuInfoPage(@PathVariable("skuId") String skuId, HttpServletRequest request){
         SkuInfo skuInfo = manageService.getSkuInfo(skuId);
         List<SpuSaleAttr> saleAttrList = manageService.getSpuSaleAttrListCheckBySku(skuId, skuInfo.getSpuId());
@@ -41,6 +43,7 @@ public class ItemController {
 //        System.out.println(valuesSkuJson);
 //        System.out.println(skuId);
         listService.incrHotScore(skuId);
+        request.getAttribute("userId");
         return "item";
     }
 
