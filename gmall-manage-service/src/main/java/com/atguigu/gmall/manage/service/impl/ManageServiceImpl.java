@@ -64,7 +64,7 @@ public class ManageServiceImpl implements ManageService{
 
     public static final String SKUKEY_INFO_SUFFIX=":info";
     public static final String SKUKEY_LOCK_SUFFIX=":lock";
-//    public static final int SKUKEY_TIMEOUT=24*60*60;
+    public static final int SKUKEY_TIMEOUT=24*60*60;
 
 
     @Override
@@ -330,7 +330,7 @@ public class ManageServiceImpl implements ManageService{
         SkuInfo skuInfoResult=null;
         //1  先查redis  没有再查数据库
         Jedis jedis = redisUtil.getJedis();
-        int SKU_EXPIRE_SEC=100;
+        int SKU_EXPIRE_SEC=60*60*24;
         // redis结构 ： 1 type  string  2 key   sku:101:info  3 value  skuInfoJson
         String skuKey=SKUKEY_PREFIX+skuId+SKUKEY_INFO_SUFFIX;
         String skuInfoJson = jedis.get(skuKey);
@@ -373,7 +373,7 @@ public class ManageServiceImpl implements ManageService{
                     } else {
                         skuInfoJsonResult = "EMPTY";
                     }
-                    jedis.setex(skuKey, SKU_EXPIRE_SEC, skuInfoJsonResult);
+                    jedis.setex(skuKey,SKU_EXPIRE_SEC, skuInfoJsonResult);
                 }
                 lock.unlock();
             }

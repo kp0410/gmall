@@ -264,8 +264,9 @@
 								<form id="itemForm" action="http://cart.gmall.com/addToCart" method="post">
 								<input type="text" name="num" id="" value="1" />
 								<!--<input type="hidden" name="skuId"   />-->
-								<input id="valuesSku" type="hidden"  th:value= "${valuesSkuJson}"  />
-								<input id="skuId" type="hidden"  th:value= "${skuInfo.id}"  />
+								<input name="skuId" id="skuId" type="hidden"  th:value= "${skuInfo.id}"  />
+								<input name="valuesSku" id="valuesSku" type="hidden"  th:value= "${valuesSkuJson}"  />
+
 
 
 								<div class="box-btns-one1">

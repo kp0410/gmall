@@ -10,6 +10,8 @@
         <module name="fastdfs-client-java" />
         <module name="gamll-util-service" />
         <module name="gmall-bean" />
+        <module name="gmall-cart-service" />
+        <module name="gmall-cart-web" />
         <module name="gmall-interface" />
         <module name="gmall-item-web" />
         <module name="gmall-list-service" />
@@ -27,6 +29,8 @@
       <module name="fastdfs-client-java" target="1.6" />
       <module name="gamll-util-service" target="1.8" />
       <module name="gmall-bean" target="1.8" />
+      <module name="gmall-cart-service" target="1.8" />
+      <module name="gmall-cart-web" target="1.8" />
       <module name="gmall-interface" target="1.8" />
       <module name="gmall-item-web" target="1.8" />
       <module name="gmall-list-service" target="1.8" />
