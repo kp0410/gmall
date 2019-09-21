@@ -12,9 +12,7 @@ import com.atguigu.gmall.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -60,8 +58,55 @@ public class CartServiceImpl implements CartService {
         return cartInfoExists;
     }
 
+    @Override
+    public List<CartInfo> getCartList(String userId) {
+        //先查缓存
+        Jedis jedis = redisUtil.getJedis();
+        String cartKey = "cart:"+userId +":info";
+        List<String> cartJsonList = jedis.hvals(cartKey);
+        List<CartInfo> cartList = new ArrayList<>();
+        if(cartJsonList!=null&&cartJsonList.size()>0){//缓存命中
+            for (String cartJson : cartJsonList) {
+                CartInfo cartInfo = JSON.parseObject(cartJson, CartInfo.class);
+                cartList.add(cartInfo);
+            }
+
+            cartList.sort(new Comparator<CartInfo>() {
+                @Override
+                public int compare(CartInfo o1, CartInfo o2) {
+                    return o2.getId().compareTo(o1.getId());
+                }
+            });
+            return cartList;
+        } else {
+            //缓存未命中  //缓存没有查数据库 ，同时加载到缓存中
+            return loadCartCache(userId);
+        }
+    }
+
     /**
-     *  缓存没有查数据库 ，同时加载到缓存中
+     * 合并购物车
+     * @param userIdDest
+     * @param userIdOrig
+     * @return
+     */
+    @Override
+    public List<CartInfo> mergeCartList(String userIdDest, String userIdOrig) {
+        //1、先做合并
+        cartInfoMapper.mergeCartList(userIdDest,userIdOrig);
+        // 2、 合并后 把临时购物车删除
+        CartInfo cartInfo = new CartInfo();
+        cartInfo.setUserId(userIdOrig);
+        // 删除临时购物车
+        cartInfoMapper.delete(cartInfo);
+        //3、重新读写数据  加载缓存
+        List<CartInfo> cartInfoList = loadCartCache(userIdOrig);
+        return cartInfoList;
+    }
+
+
+    /**
+     *  缓存没有 查数据库 ，同时加载到缓存中
      * @param userId
      * @return
      */
@@ -84,6 +129,8 @@ public class CartServiceImpl implements CartService {
         }
         return cartInfoList;
     }
+
+
 
 
 }

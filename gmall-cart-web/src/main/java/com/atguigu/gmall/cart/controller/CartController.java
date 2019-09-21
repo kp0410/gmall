@@ -7,11 +7,13 @@ import com.atguigu.gmall.config.LoginRequire;
 import com.atguigu.gmall.service.CartService;
 import com.atguigu.gmall.util.CookieUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -39,4 +41,43 @@ public class CartController {
         request.setAttribute("num",num);
         return "success";
     }
+
+
+    /**
+     * 购物车
+     * @param request
+     * @return
+     */
+    @LoginRequire(autoRedirect = false)
+    @GetMapping("cartList")
+    public String cartList(HttpServletRequest request){
+        // 判断用户是否登录，登录了从redis中，redis中没有，从数据库中取
+        // 没有登录，从cookie中取得
+        String userId = (String) request.getAttribute("userId");
+        List<CartInfo> cartList =null;
+        if (userId != null) {
+            // 从redis中取得，或者从数据库中
+            cartList = cartService.getCartList(userId);
+        }
+        String userTmpId = CookieUtil.getCookieValue(request, "user_tmp_id", false);
+        List<CartInfo> cartTempList = null;
+        if (userTmpId != null) {
+            cartTempList = cartService.getCartList(userTmpId);
+            cartList=cartTempList;
+        }
+
+        //合并购物车
+        if (userId != null&&cartTempList!=null&&cartTempList.size()>0) {
+            cartList = cartService.mergeCartList(userId,userTmpId);
+        }
+        request.setAttribute("cartList",cartList);
+
+        return "cartList";
+    }
+
+
+
+
+
+
 }
