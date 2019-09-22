@@ -6,6 +6,6 @@ public interface WebConst {
     //认证接口
     public final static String VERIFY_URL = "http://passport.gmall.com/verify";
     //cookie的有效时间：默认给7天
-    public final static int cookieMaxAge = 7*24*60*60;
+    public final static int cookieMaxAge = 10*60;
 
 }

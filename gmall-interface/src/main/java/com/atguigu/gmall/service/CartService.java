@@ -11,4 +11,7 @@ public interface CartService {
 
 
     public List<CartInfo> mergeCartList(String userIdDest, String userIdOrig);
+
+    public void checkCart(String skuId, String isChecked, String userId);
+
 }

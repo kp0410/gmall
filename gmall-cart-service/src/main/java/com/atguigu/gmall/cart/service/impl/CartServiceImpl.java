@@ -97,11 +97,36 @@ public class CartServiceImpl implements CartService {
         // 2、 合并后 把临时购物车删除
         CartInfo cartInfo = new CartInfo();
         cartInfo.setUserId(userIdOrig);
-        // 删除临时购物车
         cartInfoMapper.delete(cartInfo);
+        Jedis jedis = redisUtil.getJedis();
+        jedis.del("cart:"+userIdOrig+":info");
+        jedis.close();
         //3、重新读写数据  加载缓存
         List<CartInfo> cartInfoList = loadCartCache(userIdOrig);
         return cartInfoList;
+    }
+
+    @Override
+    public void checkCart(String skuId, String isChecked, String userId) {
+        loadCartCache(userId);// 检查一下缓存是否存在 避免因为缓存失效造成 缓存和数据库不一致
+        //  isCheck数据 值保存在缓存中
+        //保存标志
+        String cartKey ="cart:" + userId + ":info";
+        Jedis jedis = redisUtil.getJedis();
+        String cartInfoJson = jedis.hget(cartKey,skuId);
+        CartInfo cartInfo = JSON.parseObject(cartInfoJson,CartInfo.class);
+        cartInfo.setIsChecked(isChecked);
+        String cartInfoJsonNew = JSON.toJSONString(cartInfo);
+        jedis.hset(cartKey,skuId,cartInfoJsonNew);
+        // 为了订单结账 把所有勾中的商品单独 在存放到一个checked购物车中
+        String cartCheckeKey = "cart:" + userId +":checked";
+        if(isChecked.equals("1")) {//勾中加入到待结账购物车中， 取消勾中从待结账购物车中删除
+            jedis.hset(cartCheckeKey,skuId,cartInfoJsonNew);
+            jedis.expire(cartCheckeKey,60*60);
+        } else {
+            jedis.hdel(cartCheckeKey,skuId);
+        }
+        jedis.close();
     }
 
 

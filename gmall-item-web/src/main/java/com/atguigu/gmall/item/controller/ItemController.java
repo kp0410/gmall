@@ -25,7 +25,7 @@ public class ItemController {
     ListService listService;
 
     @GetMapping("{skuId}.html")
-    @LoginRequire
+    @LoginRequire(autoRedirect = false)
     public String skuInfoPage(@PathVariable("skuId") String skuId, HttpServletRequest request){
         SkuInfo skuInfo = manageService.getSkuInfo(skuId);
         List<SpuSaleAttr> saleAttrList = manageService.getSpuSaleAttrListCheckBySku(skuId, skuInfo.getSpuId());
