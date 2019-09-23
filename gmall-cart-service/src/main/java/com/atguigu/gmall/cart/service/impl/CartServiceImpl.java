@@ -102,7 +102,7 @@ public class CartServiceImpl implements CartService {
         jedis.del("cart:"+userIdOrig+":info");
         jedis.close();
         //3、重新读写数据  加载缓存
-        List<CartInfo> cartInfoList = loadCartCache(userIdOrig);
+        List<CartInfo> cartInfoList = loadCartCache(userIdDest);
         return cartInfoList;
     }
 
@@ -127,6 +127,18 @@ public class CartServiceImpl implements CartService {
             jedis.hdel(cartCheckeKey,skuId);
         }
         jedis.close();
+    }
+
+    /**
+     * 得到选中购物车列表
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<CartInfo> getCheckedCartList(String userId) {
+        // 获得redis中的key
+//        CartConst.
+        return null;
     }
 
 

@@ -42,8 +42,8 @@ public class PassportController {
         //取得IP地址
         String remoteAddr = request.getHeader("X-forwarded-for");
 //        String remoteAddr = request.getRemoteAddr();
-        System.out.println(remoteAddr); //192.168.17.1   192.168.17.128
-        System.out.println(request.getRemoteAddr());// 192.168.17.128   192.168.17.128
+//        System.out.println(remoteAddr); //192.168.17.1   192.168.17.128
+//        System.out.println(request.getRemoteAddr());// 192.168.17.128   192.168.17.128
         if (userInfo != null) {
             UserInfo loginUser = userService.login(userInfo);
             if (loginUser == null) {

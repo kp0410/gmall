@@ -55,6 +55,7 @@ public class CartController {
     public String cartList(HttpServletRequest request){
         // 判断用户是否登录，登录了从redis中，redis中没有，从数据库中取
         // 没有登录，从cookie中取得
+
         String userId = (String) request.getAttribute("userId");//查看用户登录id
 
         if (userId != null) {//有登录
