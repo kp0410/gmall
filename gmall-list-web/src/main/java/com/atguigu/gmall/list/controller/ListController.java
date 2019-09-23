@@ -26,7 +26,7 @@ public class ListController {
     @GetMapping("list.html")
 //    @ResponseBody
     public String getList(SkuLsParams skuLsParams,Model model){
-        skuLsParams.setPageSize(4);
+        skuLsParams.setPageSize(8);
         //根据参数返回sku列表
         SkuLsResult skuLsResult  = listService.search(skuLsParams);
         model.addAttribute("skuLsResult",skuLsResult);

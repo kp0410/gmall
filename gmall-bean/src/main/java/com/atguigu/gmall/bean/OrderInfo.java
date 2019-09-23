@@ -1,5 +1,8 @@
 package com.atguigu.gmall.bean;
 
+import com.atguigu.gmall.enums.OrderStatus;
+import com.atguigu.gmall.enums.PaymentWay;
+import com.atguigu.gmall.enums.ProcessStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,18 +30,19 @@ public class OrderInfo implements Serializable {
     @Column
     private BigDecimal totalAmount;
 
-//    @Column
-//    private OrderStatus orderStatus;
-//
-//    @Column
-//    private ProcessStatus processStatus;
+    @Column
+    private OrderStatus orderStatus;
+
+    @Column
+    private ProcessStatus processStatus;
 
 
     @Column
     private String userId;
 
-//    @Column
-//    private PaymentWay paymentWay;
+
+    @Column
+    private PaymentWay paymentWay;
 
     @Column
     private Date expireTime;

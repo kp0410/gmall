@@ -58,11 +58,11 @@
 
 
 			<!--地址-->
-			<div class="top-3">
+			<div class="top-3" th:each="userAddress:${userAddressList}">
 				<ul >
-				 <li class=".address default selected"  >
-					 <input   name="deliveryAddress" type="radio"  value=""  checked="true">
-					<span  >收件人AAAA </span><span    >具体地址111 </span>
+				 <li class=".address default selected" >
+					 <input   name="deliveryAddress" type="radio"  value=""  checked="true" th:checked="(${userAddress.isDefault=='1'})?'true':'false'">
+					<span th:text="${userAddress.consignee}" >收件人AAAA </span><span  th:text="${userAddress.userAddress}"  >具体地址111 </span>
 				 </li>
 				</ul>
 			</div>
@@ -86,10 +86,10 @@
 			<div class="to_right">
 				<h5>商家：自营</h5>
 				<!--图片-->
-				<div class="yun1"  >
-					<img  src="" class="yun"/>
+				<div class="yun1" th:each="cartInfo:${checkedCartList}" >
+					<img  src="" class="yun" th:src="${cartInfo.imgUrl}"/>
 					<div class="mi">
-						<div><p style="width: 500px;" >商品名称111111111111 </p> <span style="float: right"> <span align="center" style="color: red" >   </span> <span   > X 1   </span> <span  >有货</span>  <span  >无货</span>  </span> </div>
+						<div><p style="width: 500px;" th:text="${cartInfo.skuName}">商品名称111111111111 </p> <span style="float: right"> <span align="center" style="color: red"  th:text="${cartInfo.skuPrice}">   </span> <span  th:text="'X'+${cartInfo.skuNum}" > X 1   </span> <span  >有货</span>  <span  >无货</span>  </span> </div>
 
 					</div>
 				</div>
@@ -110,7 +110,7 @@
 
 
 			<div class="yfze">
-				<p class="yfze_a"><span class="z">应付总额：</span><span class="hq" > ￥99999</span></p>
+				<p class="yfze_a"><span class="z">应付总额：</span><span class="hq" th:text="'￥'+${totalAmount}" > ￥99999</span></p>
 
 
 			<button id="submitButton" class="tijiao">提交订单</button>
@@ -122,20 +122,23 @@
 			<input name="deliveryAddress" id="deliveryAddress" type="hidden"/>
 			<input name="paymentWay" id="paymentWay" type="hidden"/>
 			<input name="orderComment" id="orderComment" type="hidden"/>
-			<span  >
-				<input name="orderDetailList[0].skuId'" type="hidden"    value="" />
-				<input name="orderDetailList[0].skuNum'" type="hidden"    value="" />
-				<input name="orderDetailList[0].orderPrice'" type="hidden"    value="" />
-			</span>
-			<input name="tradeNo" type="hidden"  value=""  />
+			<span  th:each="cartInfo,stat: ${orderDetailList}">
+				<input th:name="'orderDetailList['+${stat.index}+'].skuId'" th:value="${cartInfo.skuId}" name="orderDetailList[0].skuId'" type="hidden"    value="" />
+				<input th:name="'orderDetailList['+${stat.index}+'].skuNum'" th:value="${cartInfo.skuNum}" name="orderDetailList[0].skuNum'" type="hidden"    value="" />
+				<input th:name="'orderDetailList['+${stat.index}+'].orderPrice'" th:value="${cartInfo.orderPrice}" name="orderDetailList[0].skuPrice'" type="hidden"    value="" />
+
+			<input name="tradeNo" type="hidden"  value="" th:value="${tradeNo}" />
 		</form>
 		<script>
             $(function() {
 
                 $("#submitButton").click(function () {
+                    // 收货人
                    $("#consignee").val($("input[type='radio']:checked").next().text()) ;
+                    // 收获地址
                    $("#deliveryAddress").val( $("input[type='radio']:checked").next().next().text());
                    $("#paymentWay").val("ONLINE");
+                    // 订单备注
                    $("#orderComment").val($("#orderCommentPage").val());
                    console.log($("#orderForm").html());
                    $("#orderForm").submit();

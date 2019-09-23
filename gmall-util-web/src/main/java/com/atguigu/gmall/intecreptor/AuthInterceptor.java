@@ -59,7 +59,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
                 if ("success".equals(result)){  //认证成功
                     Map userMap = getUserMapByToken(token);
                     String userId = (String) userMap.get("userId");
+                    Object nickname = userMap.get("nickName");
+                    System.err.println(nickname);
                     request.setAttribute("userId",userId);
+                    request.setAttribute("nickName",nickname);
+
                     return true;
                 }else if (!loginRequire.autoRedirect()){ //认证失败但是 运行不跳转
                     return true;

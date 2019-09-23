@@ -14,5 +14,5 @@ public interface CartService {
 
     public void checkCart(String skuId, String isChecked, String userId);
 
-    List<CartInfo> getCheckedCartList(String userId);
+    public List<CartInfo> getCheckedCartList(String userId);
 }

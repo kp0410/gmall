@@ -27,6 +27,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartInfo addCart(String userId, String skuId, Integer num) {
+        // 为了防止 更新购物车前 缓存过期
+        loadCartCacheIfNotExists(userId) ;
+
         // 加数据库
         // 尝试取出已有的数据    如果有  把数量更新 update   如果没有insert
         CartInfo cartInfoQuery = new CartInfo();
@@ -108,9 +111,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void checkCart(String skuId, String isChecked, String userId) {
-        loadCartCache(userId);// 检查一下缓存是否存在 避免因为缓存失效造成 缓存和数据库不一致
+        loadCartCacheIfNotExists(userId);// 检查一下缓存是否存在 避免因为缓存失效造成 缓存和数据库不一致
         //  isCheck数据 值保存在缓存中
-        //保存标志
+        // 保存标志
         String cartKey ="cart:" + userId + ":info";
         Jedis jedis = redisUtil.getJedis();
         String cartInfoJson = jedis.hget(cartKey,skuId);
@@ -137,8 +140,19 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartInfo> getCheckedCartList(String userId) {
         // 获得redis中的key
-//        CartConst.
-        return null;
+        String cartCheckedKey ="cart:"+userId+":checked";
+        Jedis jedis = redisUtil.getJedis();
+        List<String> checkedCartList = jedis.hvals(cartCheckedKey);
+
+        List<CartInfo> cartInfoList = new ArrayList<>();
+
+        for (String cartInfoJson : checkedCartList) {
+            CartInfo cartInfo = JSON.parseObject(cartInfoJson, CartInfo.class);
+            cartInfoList.add(cartInfo);
+        }
+
+        jedis.close();
+        return cartInfoList;
     }
 
 
@@ -161,10 +175,24 @@ public class CartServiceImpl implements CartService {
             String cartKey = "cart:" + userId +":info";
             jedis.del(cartKey);
             jedis.hmset(cartKey,cartMap);
-            jedis.expire(cartKey,60*60*24);
+            jedis.expire(cartKey,60*60*2);
             jedis.close();
         }
         return cartInfoList;
+    }
+
+    public void  loadCartCacheIfNotExists(String userId){
+        String cartkey="cart:"+userId+":info";
+        Jedis jedis = redisUtil.getJedis();
+        Long ttl = jedis.ttl(cartkey);
+        int ttlInt = ttl.intValue();
+        jedis.expire(cartkey,ttlInt+10);
+        Boolean exists = jedis.exists(cartkey);
+        jedis.close();
+        if( !exists){
+            loadCartCache( userId);
+        }
+
     }
 
 
