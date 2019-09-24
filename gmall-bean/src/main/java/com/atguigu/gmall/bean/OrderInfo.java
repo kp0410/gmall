@@ -81,6 +81,4 @@ public class OrderInfo implements Serializable {
         this.totalAmount=  totalAmount;
     }
 
-    public String genSubject() {
-    }
 }
