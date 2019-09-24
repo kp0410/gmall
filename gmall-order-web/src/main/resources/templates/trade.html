@@ -52,6 +52,7 @@
 			<!--收货人信息-->
 			<div class="top-2">
 				<span>收货人信息</span>
+				<span th:text="${tradeNo}"></span>
 				<span>新增收货地址</span>
 			</div>
 
@@ -89,7 +90,7 @@
 				<div class="yun1" th:each="cartInfo:${checkedCartList}" >
 					<img  src="" class="yun" th:src="${cartInfo.imgUrl}"/>
 					<div class="mi">
-						<div><p style="width: 500px;" th:text="${cartInfo.skuName}">商品名称111111111111 </p> <span style="float: right"> <span align="center" style="color: red"  th:text="${cartInfo.skuPrice}">   </span> <span  th:text="'X'+${cartInfo.skuNum}" > X 1   </span> <span  >有货</span>  <span  >无货</span>  </span> </div>
+						<div><p style="width: 500px;" th:text="${cartInfo.skuName}">商品名称111111111111 </p> <span style="float: right"> <span align="center" style="color: red"  th:text="${cartInfo.skuPrice}">   </span> <span  th:text="'X '+ ${cartInfo.skuNum}" > X 1   </span> <span  >有货</span>  <span ></span>  </span> </div>
 
 					</div>
 				</div>
@@ -122,11 +123,12 @@
 			<input name="deliveryAddress" id="deliveryAddress" type="hidden"/>
 			<input name="paymentWay" id="paymentWay" type="hidden"/>
 			<input name="orderComment" id="orderComment" type="hidden"/>
-			<span  th:each="cartInfo,stat: ${orderDetailList}">
-				<input th:name="'orderDetailList['+${stat.index}+'].skuId'" th:value="${cartInfo.skuId}" name="orderDetailList[0].skuId'" type="hidden"    value="" />
-				<input th:name="'orderDetailList['+${stat.index}+'].skuNum'" th:value="${cartInfo.skuNum}" name="orderDetailList[0].skuNum'" type="hidden"    value="" />
-				<input th:name="'orderDetailList['+${stat.index}+'].orderPrice'" th:value="${cartInfo.orderPrice}" name="orderDetailList[0].skuPrice'" type="hidden"    value="" />
-
+			<span  th:each="cartInfo,stat: ${checkedCartList}">
+				<input th:name="'orderDetailList['+${stat.index}+'].skuId'" th:value="${cartInfo.skuId}" name="orderDetailList[0].skuId'" type="hidden" value="" />
+				<input th:name="'orderDetailList['+${stat.index}+'].skuNum'" th:value="${cartInfo.skuNum}" name="orderDetailList[0].skuNum'" type="hidden" value="" />
+				<input th:name="'orderDetailList['+${stat.index}+'].orderPrice'" th:value="${cartInfo.skuPrice}" name="orderDetailList[0].skuPrice'" type="hidden" value="" />
+				<input th:name="'orderDetailList['+${stat.index}+'].skuName'" th:value="${cartInfo.skuName}" name="orderDetailList[0].skuName'" type="hidden"  value="" />
+			</span>
 			<input name="tradeNo" type="hidden"  value="" th:value="${tradeNo}" />
 		</form>
 		<script>

@@ -11,7 +11,6 @@ public enum OrderStatus {
 
     private String comment ;
 
-
     OrderStatus(String comment ){
         this.comment=comment;
     }
@@ -23,7 +22,5 @@ public enum OrderStatus {
     public void setComment(String comment) {
         this.comment = comment;
     }
-
-
 }
 

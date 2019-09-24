@@ -11,7 +11,10 @@ import com.atguigu.gmall.service.OrderService;
 import com.atguigu.gmall.service.UserService;
 
 
+import com.atguigu.gmall.util.HttpClientUtil;
 import org.apache.commons.lang3.time.DateUtils;
+import org.codehaus.groovy.runtime.powerassert.SourceText;
+import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 @Controller
 public class OrderController {
@@ -75,6 +79,8 @@ public class OrderController {
             return "tradeFail";
         }
 
+        // 验库存  验价
+
         // 初始化参数
         orderInfo.setOrderStatus(OrderStatus.UNPAID);
         orderInfo.setProcessStatus(ProcessStatus.UNPAID);
@@ -95,10 +101,79 @@ public class OrderController {
                 return  "tradeFail";
             }
         }
+
+
+        List<OrderDetail> errList = Collections.synchronizedList(new ArrayList<>());
+        Stream<CompletableFuture<String>> completableFutureStream = orderDetailList.stream().map(orderDetail ->
+                CompletableFuture.supplyAsync(() -> checkSkuNum(orderDetail)).whenComplete((hasStock, ex) -> {
+                    if (hasStock.equals("0")) {
+                        errList.add(orderDetail);
+                    }
+                })
+        );
+        CompletableFuture[] completableFutures = completableFutureStream.toArray(CompletableFuture[]::new);
+
+        CompletableFuture.allOf(completableFutures).join();
+
+        if(errList.size()>0){
+            StringBuffer errStingbuffer=new StringBuffer();
+            for (OrderDetail orderDetail : errList) {
+                errStingbuffer.append("商品："+orderDetail.getSkuName()+"库存暂时不足！");
+            }
+            request.setAttribute("errMsg",errStingbuffer.toString());
+            return  "tradeFail";
+        }
+
+
         //保存
         String orderId = orderService.saveOrder(orderInfo);
+
+        // DOTO 此处应该删除购物车信息
+
         // 重定向
         return "redirect://payment.gmall.com/index?orderId="+orderId;
+    }
+
+    private String checkSkuNum(OrderDetail orderDetail) {
+        String hasStock = HttpClientUtil.doGet("http://www.gware.com/hasStock?skuId=" + orderDetail.getSkuId() + "&num=" + orderDetail.getSkuNum());
+        return hasStock;
+    }
+
+
+    //   List  1,2,3,4,5,6,7,8,9    找出 所有能够被3整除的数  放到一个清单里
+    @Test
+    public void test1(){
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        // List  rsList=new CopyOnWriteArrayList();   适合多读少写
+        List rsList = Collections.synchronizedList(new ArrayList<>());//适合多写少读
+        Stream<CompletableFuture<Boolean>> completableFutureStream = list.stream().map(num->CompletableFuture.supplyAsync(()->checkNum(num)).whenComplete((ifPass, ex)->{
+                    //supplyAsync中 添加异步执行的线程处理任务  //whenComplete 添加线程执行完毕后的造操作  //
+        if (ifPass){
+            rsList.add(num);
+        }
+    })
+    );
+        // 流式处理 相当于把list<integer>里的转化为一个  Future数组  ,Future可以理解为一个不知道什么时候执行完的异步结果
+        CompletableFuture[] completableFutures = completableFutureStream.toArray(CompletableFuture[]::new);
+        // 归集操作allOf代表此处阻塞 直到线程全部执行完   anyOf代表阻塞到只要有一个执行完就可。
+        CompletableFuture.allOf(completableFutures).join();
+        System.out.println(rsList);
+
 
     }
+
+    private Boolean checkNum(Integer num) {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(num%3==0){
+            return  true;
+        }else {
+            return  false ;
+        }
+    }
+
+
 }
