@@ -128,7 +128,7 @@ public class OrderController {
         //保存
         String orderId = orderService.saveOrder(orderInfo);
 
-        // DOTO 此处应该删除购物车信息
+        // TODO 此处应该删除购物车信息
 
         // 重定向
         return "redirect://payment.gmall.com/index?orderId="+orderId;
