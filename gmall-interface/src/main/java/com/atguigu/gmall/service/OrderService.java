@@ -11,5 +11,7 @@ public interface OrderService {
     public boolean verifyToken(String userId, String token);
 
 
-    public OrderInfo checkStock(String orderId);
+//    public OrderInfo checkStock(String orderId);
+
+    OrderInfo getOrderInfo(String orderId);
 }

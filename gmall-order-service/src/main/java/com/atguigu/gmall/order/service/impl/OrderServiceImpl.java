@@ -70,19 +70,15 @@ public class OrderServiceImpl implements OrderService{
 
     }
 
-    /**
-     * 验证库存
-     * @param orderId
-     * @return
-     */
+
+
     @Override
-    public OrderInfo checkStock(String orderId) {
+    public OrderInfo getOrderInfo(String orderId) {
         OrderInfo orderInfo = orderInfoMapper.selectByPrimaryKey(orderId);
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrderId(orderId);
-        List<OrderDetail> orderDetailList = orderDetailMapper.select(orderDetail);
-        orderInfo.setOrderDetailList(orderDetailList);
-
+        // 将orderDetai 放入orderInfo 中
+        orderInfo.setOrderDetailList(orderDetailMapper.select(orderDetail));
         return orderInfo;
     }
 }
