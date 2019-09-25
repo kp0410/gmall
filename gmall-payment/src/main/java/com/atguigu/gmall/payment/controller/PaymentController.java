@@ -8,6 +8,8 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.atguigu.gmall.bean.OrderInfo;
 import com.atguigu.gmall.bean.PaymentInfo;
 import com.atguigu.gmall.config.LoginRequire;
@@ -99,15 +101,17 @@ public class PaymentController {
         return submitHtml;
     }
 
-    
+
+
+    /**
+     * 支付信息回调
+     * @param paramMap
+     * @param request
+     * @return
+     * @throws AlipayApiException
+     */
     @PostMapping("/alipay/callback/notify")
     public String notify(@RequestParam Map<String,String> paramMap,HttpServletRequest request) throws AlipayApiException {
-
-
-
-
-
-
         String sign = paramMap.get("sign");
         // 1    验签  //  支付宝公钥  数据
         boolean ifPass = AlipaySignature.rsaCheckV1(paramMap, AlipayConfig.alipay_public_key, "utf-8", AlipayConfig.sign_type);
@@ -155,6 +159,33 @@ public class PaymentController {
     }
 
 
+    //退款
+    @GetMapping("refund")
+    @ResponseBody
+    public String refund(String orderId) throws AlipayApiException {
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        PaymentInfo paymentInfoQuery = new PaymentInfo();
+        paymentInfoQuery.setOrderId(orderId);
+        PaymentInfo paymentInfo = paymentInfoService.getPaymentInfo(paymentInfoQuery);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("out_trade_no",paymentInfo.getOutTradeNo());
+        jsonObject.put("refund_amount",paymentInfo.getTotalAmount());
+        request.setBizContent(jsonObject.toJSONString());
+        AlipayTradeRefundResponse response = alipayClient.execute(request);
+        if (response.isSuccess()) {
+            System.out.println("调用成功");
+            System.out.println("业务退款成功");
+            PaymentInfo paymentInfoForUpdate =  new PaymentInfo();
+            paymentInfoForUpdate.setPaymentStatus(PaymentStatus.PAY_REFUND);
+            paymentInfoService.updatePaymentInfoByOutTradeNo(paymentInfo.getOutTradeNo(),paymentInfoForUpdate);
+            //处理订单状态
+            //异步处理
+            return "success";
+        } else {
+            return response.getSubCode()+":"+response.getSubMsg();
+        }
+    }
 
 
 }
