@@ -158,8 +158,12 @@ public class PaymentController {
         return "交易成功";
     }
 
-
-    //退款
+    /**
+     * 退款
+     * @param orderId
+     * @return
+     * @throws AlipayApiException
+     */
     @GetMapping("refund")
     @ResponseBody
     public String refund(String orderId) throws AlipayApiException {
