@@ -1,6 +1,7 @@
 package com.atguigu.gmall.service;
 
 import com.atguigu.gmall.bean.OrderInfo;
+import com.atguigu.gmall.enums.ProcessStatus;
 
 public interface OrderService {
 
@@ -11,4 +12,8 @@ public interface OrderService {
     public boolean verifyToken(String userId, String token);
 
     public OrderInfo getOrderInfo(String orderId);
+
+    public void updateOrderStatus(String orderId, ProcessStatus processStatus,OrderInfo... orderInfos);
+
+    public void sendOrderStatus(String orderId);
 }

@@ -9,4 +9,7 @@ public interface PaymentInfoService {
 
 
     public void updatePaymentInfoByOutTradeNo(String outTradeNo, PaymentInfo paymentInfo);
+
+
+    public void sendPaymentToOrder(String orderId, String result);
 }

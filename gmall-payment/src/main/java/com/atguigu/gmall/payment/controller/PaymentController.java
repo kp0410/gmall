@@ -151,6 +151,16 @@ public class PaymentController {
         return "fail";
     }
 
+    @GetMapping("sendPayment")
+    @ResponseBody
+    public String sendPayment(String orderId){
+        paymentInfoService.sendPaymentToOrder(orderId,"success");
+        return "success";
+    }
+
+
+
+
 
     @GetMapping("/alipay/callback/return")
     @ResponseBody

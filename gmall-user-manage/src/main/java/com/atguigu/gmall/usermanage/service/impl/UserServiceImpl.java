@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     public String userKey_prefix="user:";
     public String userinfoKey_suffix=":info";
-    public int userKey_timeOut=60*3;
+    public int userKey_timeOut=60*60*8;
 
     @Override
     public UserInfo login(UserInfo userInfo) {
